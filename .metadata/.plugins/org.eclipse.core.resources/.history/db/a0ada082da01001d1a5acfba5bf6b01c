@@ -1,0 +1,26 @@
+/*
+ * my_encoder.h
+ *
+ *  Created on: Apr 1, 2022
+ *      Author: mannk
+ */
+
+#ifndef MY_ENCODER_H_
+#define MY_ENCODER_H_
+
+#include "wiring_digital.h"
+/*
+ * void initEncoder(uint8_t pina, uint8_t pinb);
+uint16_t checkStatusEncoder(volatile uint16_t *value);
+
+*/
+
+struct Encoder{
+	uint8_t pina, pinb, pre_pinA_State, count;
+
+};
+
+typedef struct Encoder* encoderPointer;
+
+#endif /* MY_ENCODER_H_ */
+

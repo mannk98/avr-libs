@@ -1,0 +1,87 @@
+/*
+ * my_encoder.c
+ *
+ *  Created on: Apr 1, 2022
+ *      Author: mannk
+ */
+
+#include <avr/io.h>
+#include "my_encoder.h"
+
+/*
+ uint8_t pre_pinA_State;
+ uint8_t pinA, pinB;
+ uint8_t count;
+
+ void initEncoder(uint8_t pina, uint8_t pinb){
+ pinA = pina;
+ pinB = pinb;
+ //pinMode(pinA, INPUT_PULLUP);
+ //pinMode(pinB, INPUT_PULLUP);
+ pre_pinA_State = digitalRead(pina);
+ }
+
+ uint16_t checkStatusEncoder(volatile uint16_t *value){
+ uint8_t pinA_State, pinB_State;
+ pinA_State = digitalRead(pinA);
+ pinB_State = digitalRead(pinB);
+
+ if(pinA_State != pre_pinA_State){
+ if(pinA_State == pinB_State){
+ count++;
+ if(count == 2){
+ ++*value;
+ count = 0;
+ }
+ }
+ else{
+ count++;
+ if(count == 2){
+ --*value;
+ count = 0;
+ }
+ }
+ pre_pinA_State = pinA_State;
+ }
+
+ return (*value);
+ }
+ */
+encoderPointer encoderInit(uint8_t pina, uint8_t pinb) {
+	encoderPointer self = (encoderPointer) malloc(sizeof(struct Encoder));
+	self->pina = pina;
+	self->pinb = pinb;
+	self->count = 0;
+	//pinMode(pinA, INPUT_PULLUP);
+	//pinMode(pinB, INPUT_PULLUP);
+	self->pre_pinA_State = digitalRead(self->pina);
+
+	return self;
+}
+
+// volatile help change it value inside Interrupt
+uint16_t encoderCheck(volatile encoderPointer self) {// pass address of itself
+	uint8_t pinA_State, pinB_State;
+	pinA_State = digitalRead(self->pina);
+	pinB_State = digitalRead(self->pinb);
+
+	if (pinA_State != pre_pinA_State) {
+		if (pinA_State == pinB_State) {
+			self->count++;
+			if (count == 2) {
+				self->encoderCounter++;
+				self->count = 0;
+			}
+		} else {
+			count++;
+			if (count == 2) {
+				self->encoderCounter--;
+				self->count = 0;
+			}
+		}
+		self->pre_pinA_State = pinA_State;
+	}
+
+	self->encoderCounter;
+}
+
